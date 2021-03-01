@@ -1,0 +1,3 @@
+0x7bdc: 0x00007d97 //the address of next instruction of entry()      0x00000000      0x00000000      0x00000000
+0x7bec: 0x00000000      0x00000000      0x00000000      0x00000000
+0x7bfc: 0x00007c4d //the address of next instruction of call bootmain      
