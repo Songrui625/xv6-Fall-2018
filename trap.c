@@ -86,6 +86,16 @@ trap(struct trapframe *tf)
               tf->trapno, cpuid(), tf->eip, rcr2());
       panic("trap");
     }
+    extern int mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm);
+    if(tf->trapno == T_PGFLT) {
+      char *mem;
+      uint a;
+      a = PGROUNDDOWN(rcr2());
+      mem = kalloc();
+      memset(mem, 0, PGSIZE);
+      if (mappages(myproc()->pgdir, (char*) a, PGSIZE, V2P(mem), PTE_W|PTE_U) == 0)
+        return;
+    }
     // In user space, assume process misbehaved.
     cprintf("pid %d %s: trap %d err %d on cpu %d "
             "eip 0x%x addr 0x%x--kill proc\n",
